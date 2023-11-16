@@ -7,8 +7,10 @@ import { createBrowserRouter, Link, Outlet, RouterProvider } from 'react-router-
 import ParkingLots from './components/ParkingLots.jsx';
 import ParkingLot from './components/ParkingLot.jsx';
 
+// QueryClient 인스턴스 생성
 const queryClient = new QueryClient();
 
+// React Router 브라우저 라우터 생성
 const router = createBrowserRouter([
   {
     path: '/',
@@ -36,19 +38,26 @@ const router = createBrowserRouter([
     ],
   },
 ]);
+
+// React DOM 렌더링
 ReactDOM.createRoot(document.getElementById('root')).render(
+  // QueryClientProvider로 감싼 전체 애플리케이션
   <QueryClientProvider client={queryClient}>
+    {/* React Query Devtools */}
     <ReactQueryDevtools initialIsOpen={false} />
+    {/* MantineProvider로 감싼 전체 애플리케이션 */}
     <MantineProvider
       theme={{
         fontFamily: 'Monaco, Courier, monospace',
         globalStyles: (theme) => ({
+          // 전역 스타일 설정, body에 배경 이미지 및 그라데이션 설정
           body: {
-            backgroundImage: `linear-gradient(90deg, rgba(255,255,255,1) 10%, rgba(255,255,255,0) 50%, rgba(255,255,255,1) 90%), url("data:image/svg+xml,<svg id='patternId' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='69.141' height='40' patternTransform='scale(2) rotate(30)'><rect x='0' y='0' width='100%' height='100%' fill='hsla(0,0%,100%,1)'/><path d='M69.212 40H46.118L34.57 20 46.118 0h23.094l11.547 20zM57.665 60H34.57L23.023 40 34.57 20h23.095l11.547 20zm0-40H34.57L23.023 0 34.57-20h23.095L69.212 0zM34.57 60H11.476L-.07 40l11.547-20h23.095l11.547 20zm0-40H11.476L-.07 0l11.547-20h23.095L46.118 0zM23.023 40H-.07l-11.547-20L-.07 0h23.094L34.57 20z'  stroke-width='0.5' stroke='hsla(210, 0%, 96%, 1)' fill='none'/></pattern></defs><rect width='800%' height='800%' transform='translate(-276,-160)' fill='url(%23a)'/></svg>")`,
+            backgroundImage: `linear-gradient(90deg, rgba(255,255,255,1) 10%, rgba(255,255,255,0) 50%, rgba(255,255,255,1) 90%), url("data:image/svg+xml,<svg id='patternId' width='100%' height='100%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='69.141' height='40' patternTransform='scale(2) rotate(30)'><rect x='0' y='0' width='100%' height='100%' fill='hsla(0,0%,100%,1)'/><path d='M69.212 40H46.118L34.57 20 46.118 0h23.094l11.547 20zM57.665 60H34.57L23.023 40 34.57 20h23.095l11.547 20zm0-40H34.57L23.023 40 34.57 20h23.095l11.547 20zm0-40H34.57L23.023 0 34.57-20h23.095L69.212 0zM34.57 60H11.476L-.07 40l11.547-20h23.095l11.547 20zm0-40H11.476L-.07 0l11.547-20h23.095L46.118 0zM23.023 40H-.07l-11.547-20L-.07 0h23.094L34.57 20z'  stroke-width='0.5' stroke='hsla(210, 0%, 96%, 1)' fill='none'/></pattern></defs><rect width='800%' height='800%' transform='translate(-276,-160)' fill='url(%23a)'/></svg>")`,
           },
         }),
       }}
     >
+      {/* RouterProvider로 감싼 전체 애플리케이션 */}
       <RouterProvider router={router} />
     </MantineProvider>
   </QueryClientProvider>

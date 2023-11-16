@@ -2,9 +2,12 @@ import { Box, useMantineTheme, Text } from '@mantine/core';
 import Mercedes from '../assets/mercedes.svg';
 import { motion, AnimatePresence } from 'framer-motion';
 
+// ParkingSpot 컴포넌트 정의
 function ParkingSpot(props) {
+  // Mantine 테마 설정
   const theme = useMantineTheme();
 
+  // 컴포넌트 렌더링
   return (
     <Box
       component="div"
@@ -21,6 +24,7 @@ function ParkingSpot(props) {
       }}
     >
       <AnimatePresence>
+        {/* 주차 공간이 차있을 경우 */}
         {props.occupied && (
           <motion.div
             key={`${props.name}-motion`}
@@ -35,21 +39,34 @@ function ParkingSpot(props) {
               alignItems: 'center',
             }}
           >
+            {/* 차 이미지 표시 */}
             <img
               src={Mercedes}
               height={60}
               alt="mercedes car top view"
-              style={{ transform: props.leftAligned ? undefined : 'rotate(180deg)',
-                filter: `drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.4)` }}
+              style={{
+                transform: props.leftAligned ? undefined : 'rotate(180deg)',
+                filter: `drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.4)`,
+              }}
             />
           </motion.div>
         )}
       </AnimatePresence>
+      {/* 주차 공간이 비어있을 경우 */}
       {!props.occupied && (
-        <Text style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', color: theme.colors.gray[9] }}>
+        <Text
+          style={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            color: theme.colors.gray[9],
+          }}
+        >
           Available
         </Text>
       )}
+      {/* 주차 공간 이름 표시 */}
       <Text
         fz="sm"
         style={{
@@ -66,4 +83,5 @@ function ParkingSpot(props) {
   );
 }
 
+// ParkingSpot 컴포넌트를 내보냄
 export default ParkingSpot;

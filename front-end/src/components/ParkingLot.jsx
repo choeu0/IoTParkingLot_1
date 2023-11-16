@@ -6,17 +6,22 @@ import ParkingSpot from './ParkingSpot.jsx';
 import { motion, useAnimationControls } from 'framer-motion';
 import Mercedes from '../assets/mercedes.svg';
 
+// ParkingLot 컴포넌트 정의
 function ParkingLot() {
+  // React Router의 useParams 훅을 이용해 URL 파라미터 추출
   let params = useParams();
 
+  // 상태 및 애니메이션 컨트롤 정의
   const [parkingLotData, setParkingLotData] = useState({});
   const [listening, setListening] = useState(false);
   const controlsEntry = useAnimationControls();
   const controlsDeparture = useAnimationControls();
   const [animate, setAnimate] = useState(false);
 
+  // Mantine 테마 객체 얻기
   const theme = useMantineTheme();
 
+  // React Query 훅을 이용해 서버에서 데이터 가져오기
   const { data, isLoading } = useQuery({
     queryFn: async () => {
       const result = await fetch(`/api/parking-lots/${params.id}`);
@@ -25,14 +30,17 @@ function ParkingLot() {
     queryKey: [`parking-lots/${params.id}`],
   });
 
+  // useEffect 훅을 이용해 이벤트 리스너 설정 및 데이터 업데이트
   useEffect(() => {
     if (data) {
       setParkingLotData(data);
     }
 
     if (!listening) {
+      // EventSource를 이용해 실시간 이벤트 수신
       const eventSource = new EventSource('http://localhost:5000/events');
 
+      // 주차 공간 상태 업데이트 이벤트 처리
       eventSource.addEventListener(`parking-spot/${params.id}`, (e) => {
         const parkingSpotStateEvent = JSON.parse(e.data);
 
@@ -55,6 +63,7 @@ function ParkingLot() {
         });
       });
 
+      // 주차장 이벤트 처리
       eventSource.addEventListener(`parking-lot/${params.id}`, async (e) => {
         const parkingLotEvent = JSON.parse(e.data);
 
@@ -78,6 +87,7 @@ function ParkingLot() {
     }
   }, [listening, data]);
 
+  // JSX로 화면 구성
   return (
     <Box
       style={{
@@ -98,6 +108,7 @@ function ParkingLot() {
       </Flex>
       <Flex>
         <Flex direction={'column'}>
+          {/* 주차 공간 컴포넌트 렌더링 */}
           {parkingLotData?.parkingSpaces?.map((parkingSpace, i) => {
             if (parkingLotData?.parkingSpaces?.length / 2 > i) {
               return (
@@ -123,6 +134,7 @@ function ParkingLot() {
           </Text>
         </Box>
         <Flex direction={'column'}>
+          {/* 주차 공간 컴포넌트 렌더링 */}
           {parkingLotData?.parkingSpaces?.map((parkingSpace, i) => {
             if (parkingLotData?.parkingSpaces?.length / 2 <= i) {
               return (
@@ -138,6 +150,7 @@ function ParkingLot() {
         </Flex>
       </Flex>
 
+      {/* 입차 및 출차 애니메이션 */}
       <motion.div
         key={`entry-motion`}
         animate={controlsEntry}
@@ -186,4 +199,5 @@ function ParkingLot() {
   );
 }
 
+// ParkingLot 컴포넌트를 내보냄
 export default ParkingLot;
